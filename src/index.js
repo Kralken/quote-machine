@@ -1,17 +1,150 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import ReactDOM from 'react-dom';
+import './index.scss';
+import { Provider, connect } from 'react-redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+//quote array
+//TODO load the array from a text file
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const quotesArray = [
+  {
+    quote: "hello",
+    author: "me"
+  },
+  {
+    quote: "hi",
+    author: "you"
+  },
+  {
+    quote: "hey",
+    author: "someone"
+  }
+];
+
+//redux
+
+const GENERATE = 'GENERATE';
+
+const generateQuote = () => {
+  let index = Math.floor(Math.random() * quotesArray.length);
+  return {
+    type: GENERATE,
+    index: index
+  }
+}
+
+const quoteReducer = (state = [], action) => {
+  switch (action.type) {
+    case GENERATE:
+      return {
+        quote: quotesArray[action.index].quote,
+        author: quotesArray[action.index].author,
+        index: action.index
+      };
+    default:
+      return state;
+  }
+}
+
+const store = createStore(quoteReducer);
+
+//react
+
+class Quote extends React.Component {
+  render() {
+    return (
+      <div id="text">
+        <h1 id="quote-text">{this.props.quote}</h1>
+      </div>
+    );
+  }
+}
+
+class Author extends React.Component {
+  render() {
+    return (
+      <div id="author">
+        <h3 className="author-text">{this.props.author}</h3>
+      </div>
+    );
+  }
+}
+
+class Buttons extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  };
+  handleClick() {
+    this.props.generateNewQuote();
+  };
+  tweetLink() {
+    let link = "https://twitter.com/intent/tweet?text=".concat(this.props.quote);
+    return link
+  }
+  render(){
+    return (
+      <div className="buttons">
+        <div>
+          <a id="tweet-quote" href={this.tweetLink()} target="_blank"><button><i className="fa-brands fa-twitter twitter-share-button"></i> Tweet Quote</button></a>
+        </div>
+         <div>
+          <button id="new-quote" onClick={this.handleClick}><i class="fa-solid fa-quote-left"></i> New Quote</button>
+         </div>
+      </div>
+    );
+  }
+}
+
+class QuoteBox extends React.Component {
+  constructor(props) {
+    super(props);
+    this.props = this.props.generateNewQuote();
+  };
+  
+  render() {
+    return (
+      <div id="quote-box">
+        <Quote quote={this.props.quote} />
+        <Author author={this.props.author} />
+        <Buttons generateNewQuote={this.props.generateNewQuote} quote={this.props.quote} />
+      </div>
+    )
+  }
+}
+
+//connect
+const mapStateToProps = (state) => {
+  return {
+    quote: state.quote,
+    author: state.author,
+    index: state.index
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    generateNewQuote: () => {
+      dispatch(generateQuote())
+    }
+  }
+}
+
+const Container = connect(mapStateToProps, mapDispatchToProps)(QuoteBox);
+
+//wrapper
+class AppWrapper extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+  render () {
+    return (
+      <Provider store={store}>
+        <Container/>
+      </Provider>
+    )
+  }
+}
+
+ReactDOM.render(<AppWrapper />, document.getElementById('root'));
