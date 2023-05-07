@@ -9,16 +9,20 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 
 const quotesArray = [
   {
-    quote: "hello",
-    author: "me"
+    quote: "The purpose of our lives is to be happy.",
+    author: "Dalai Lama"
   },
   {
-    quote: "hi",
-    author: "you"
+    quote: "Life is what happens when you're busy making other plans.",
+    author: "John Lennon"
   },
   {
-    quote: "hey",
-    author: "someone"
+    quote: "Get busy living or get busy dying.",
+    author: "Stephen King"
+  },
+  {
+    quote: "You only live once, but if you do it right, once is enough.",
+    author: "Mae West"
   }
 ];
 
@@ -55,7 +59,9 @@ class Quote extends React.Component {
   render() {
     return (
       <div id="text">
+        <i class="fa-solid fa-quote-left"></i>
         <h1 id="quote-text">{this.props.quote}</h1>
+        <i class="fa-solid fa-quote-right"></i>
       </div>
     );
   }
@@ -87,10 +93,10 @@ class Buttons extends React.Component {
     return (
       <div className="buttons">
         <div>
-          <a id="tweet-quote" href={this.tweetLink()} target="_blank"><button><i className="fa-brands fa-twitter twitter-share-button"></i> Tweet Quote</button></a>
+          <a id="tweet-quote" href={this.tweetLink()} target="_blank"><button className="btn btn-primary"><i className="fa-brands fa-twitter twitter-share-button"></i> Tweet Quote</button></a>
         </div>
          <div>
-          <button id="new-quote" onClick={this.handleClick}><i class="fa-solid fa-quote-left"></i> New Quote</button>
+          <button id="new-quote" onClick={this.handleClick} className="btn btn-primary"><i class="fa-solid fa-quote-left"></i> New Quote</button>
          </div>
       </div>
     );
