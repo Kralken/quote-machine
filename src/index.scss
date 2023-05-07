@@ -40,14 +40,20 @@ body {
 #text {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 #quote-text {
   margin: 0 10px;
-  
+  text-align: justify;
+  padding: 0 0.5em;
 }
 
 #author {
   text-align: right;
   margin-right: 10%;
+}
+
+.quote-marks {
+  font-size: 2em;
 }

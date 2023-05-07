@@ -59,9 +59,9 @@ class Quote extends React.Component {
   render() {
     return (
       <div id="text">
-        <i class="fa-solid fa-quote-left"></i>
+        <i className="fa-solid fa-quote-left quote-marks"></i>
         <h1 id="quote-text">{this.props.quote}</h1>
-        <i class="fa-solid fa-quote-right"></i>
+        <i className="fa-solid fa-quote-right quote-marks"></i>
       </div>
     );
   }
@@ -86,7 +86,7 @@ class Buttons extends React.Component {
     this.props.generateNewQuote();
   };
   tweetLink() {
-    let link = "https://twitter.com/intent/tweet?text=".concat(this.props.quote);
+    let link = "https://twitter.com/intent/tweet?text=".concat(this.props.quote).concat(" -").concat(this.props.author);
     return link
   }
   render(){
@@ -114,7 +114,7 @@ class QuoteBox extends React.Component {
       <div id="quote-box">
         <Quote quote={this.props.quote} />
         <Author author={this.props.author} />
-        <Buttons generateNewQuote={this.props.generateNewQuote} quote={this.props.quote} />
+        <Buttons generateNewQuote={this.props.generateNewQuote} quote={this.props.quote} author={this.props.author} />
       </div>
     )
   }
